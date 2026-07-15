@@ -13,7 +13,7 @@ Draft alt-text for images that ship without it. EfficientNet-B0 encoder + a Tran
 
 ## Why this exists
 
-Roughly half the images on the public web have no alt-text, which makes them invisible to screen readers. Writing it by hand doesn't scale for a CMS with 100k images. A captioner won't produce publishable alt-text on its own — but it can produce a *draft* that a human edits in five seconds instead of writing from a blank box. That framing (assistive tool, human in the loop) is what this repo builds.
+Roughly half the images on the public web have no alt-text, which makes them invisible to screen readers. Writing it by hand doesn't scale for a CMS with 100k images. A captioner won't produce publishable alt-text on its own, but it can produce a *draft* that a human edits in five seconds instead of writing from a blank box. That framing (assistive tool, human in the loop) is what this repo builds.
 
 ## Architecture
 
@@ -32,7 +32,7 @@ caption tokens ──> embed + pos ──> Transformer decoder ×4 ──> vocab
 Two decisions worth calling out:
 
 - **The decoder cross-attends over 49 spatial tokens, not one pooled vector.** Pooling forces the entire image through a single bottleneck; keeping the grid lets each generated word attend to the region it describes.
-- **The backbone is frozen *and* held in `eval()` mode.** `requires_grad=False` alone does not freeze BatchNorm running statistics — they keep drifting toward your batches and quietly degrade the pretrained features. See `ImageCaptioner.train()`.
+- **The backbone is frozen *and* held in `eval()` mode.** `requires_grad=False` alone does not freeze BatchNorm running statistics, they keep drifting toward your batches and quietly degrade the pretrained features. See `ImageCaptioner.train()`.
 
 ## Results
 
